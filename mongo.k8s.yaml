@@ -14,16 +14,18 @@ spec:
       labels:
         app: mongo
     spec:
+      # terminationGracePeriodSeconds: 30
       containers:
         - name: mongodb
+          # imagePullPolicy: 'Always'
           # securityContext:
           #   runAsNonRoot: true
           #   allowPrivilegeEscalation: false
           image: mongo:5.0
           resources:
             limits:
-              memory: "128Mi"
-              cpu: "500m"
+              memory: '128Mi'
+              cpu: '500m'
           ports:
             - containerPort: 27017
           env:

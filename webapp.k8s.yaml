@@ -14,34 +14,36 @@ spec:
       labels:
         app: webapp
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
-      - name: webapp
-        # securityContext:
+        - name: webapp
+          imagePullPolicy: 'Always'
+          # securityContext:
           # runAsNonRoot: true
           # allowPrivilegeEscalation: false
-        image: nanajanashia/k8s-demo-app:v1.0
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 3000
-        env:
-        - name: USER_NAME
-          valueFrom:
-            secretKeyRef:
-              name: mongo-secret
-              key: mongo-user
-        - name: USER_PWD
-          valueFrom:
-            secretKeyRef:
-              name: mongo-secret
-              key: mongo-password
-        - name: DB_URL
-          valueFrom:
-            configMapKeyRef:
-              name: mongo-config
-              key: mongo-url
+          image: nanajanashia/k8s-demo-app:v1.0
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+          ports:
+            - containerPort: 3000
+          env:
+            - name: USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: mongo-user
+            - name: USER_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: mongo-password
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-config
+                  key: mongo-url
 ---
 apiVersion: v1
 kind: Service
@@ -52,7 +54,7 @@ spec:
   selector:
     app: webapp
   ports:
-  - protocol: TCP
-    port: 3000
-    targetPort: 3000
-    nodePort: 30100
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30100
